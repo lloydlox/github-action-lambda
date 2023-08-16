@@ -23,7 +23,14 @@ jobs:
         env:
           CI: true
         run: |
+          if [ -e yarn.lock ]; then
+          yarn install --frozen-lockfile
+          elif [ -e package-lock.json ]; then
           npm ci
+          else
+          npm i
+          fi
+          npm run build
       - name: deploy
         run: |
           npx ncc build index.ts
